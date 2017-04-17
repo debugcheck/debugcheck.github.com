@@ -1,0 +1,698 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives | DebugMan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="DebugMan">
+<meta property="og:url" content="http://debugcheck.github.io/archives/index.html">
+<meta property="og:site_name" content="DebugMan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DebugMan">
+  
+    <link rel="alternative" href="/atom.xml" title="DebugMan" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">DebugMan</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">感受生活，感悟工作</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="debugcheck.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main">
+  
+    <article id="post-天弘基金移动App客户端架构优化之路" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/17/天弘基金移动App客户端架构优化之路/" class="article-date">
+  <time datetime="2017-04-17T14:35:35.000Z" itemprop="datePublished">4月 17 2017</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/架构优化/">架构优化</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/17/天弘基金移动App客户端架构优化之路/">天弘基金移动App客户端架构优化之路</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>随着移动互联网时代的到来，移动技术也随之飞速发展。如今，APP已成为绝大多数互联网企业用来获取用户的核心渠道。与此同时，伴随着业务量的增长，愈来愈多的APP也在不断地挑战着每一个移动端研发人员的知识深度，而移动端技术人员也在这个不断接受挑战的过程中，成就了今天的移动互联网时代。</p>
+<p>天弘基金作为一家在基金，金融行业高速发展的公司，APP面临着多重挑战，如庞大的用户群体、高频的基金业务、交易安全可靠性等等。天弘基金移动端的开发小伙伴在技术和业务的多重压力下，不断推进着天弘·爱理财移动端的架构演进。</p>
+<p>首先介绍下大环境背景，天弘·爱理财在前端后端使用的阿里蚂蚁金融云MPaaS（移动即服务）平台。简单说就是通过这个平台把支付宝App多年的开发经验沉淀下来，帮助生态伙伴进行金融客户端的开发，提高其适应移动互联网生态的产品研发能力，同时也嵌入了移动端的安全、风控能力，并结合支付宝APP的众多应用场景来进行金融业务创新。</p>
+<h2 id="天弘·爱理财iOS版App早期架构"><a href="#天弘·爱理财iOS版App早期架构" class="headerlink" title="天弘·爱理财iOS版App早期架构"></a>天弘·爱理财iOS版App早期架构</h2><p>在2015年爱理财App iOS的第一个版本诞生，那时候架构很简单，基本上就是在传统的MVC的架构基础上封装了一个网络服务层构建而成的，当时iOS端整体架构如图：</p>
+<p><img src="http://7xr4jm.com1.z0.glb.clouddn.com/1.png" alt=""></p>
+<p>爱理财App经历从无到有的阶段，为了快速上线抢占市场，其移动端App开发的MVC架构成了“短平快”思路的首选。</p>
+<p>在早期MVC的体系架构中</p>
+<ul>
+<li>mPaas层主要负责提供一些最低层的功能支持，如数据库，RPC网络请求，分享等等</li>
+<li>THApiClient层为整个APP网络请求的封装层，提供所有网络请求接口的请求和接受等功能</li>
+<li>Services层为整个APP业务逻辑封装层，比如<ul>
+<li>实现账号登陆注册业务的SAAccountService</li>
+<li>实现爱基金相关业务的SALoveFundService</li>
+<li>实现银行卡相关业务的SABankCardService</li>
+<li>实现买入卖出相关业务的SABusinessService</li>
+</ul>
+</li>
+<li>Controller层为View和Services层之间的一层，起到承上启下作用，提供各个模块的UI和业务实现的连接功能</li>
+<li>View层为用户展现UI和用户交互UI层</li>
+</ul>
+<p>这种架构随着版本迭代开发出现了越来越多的问题，在开发的后期会由于其超高耦和性，从而造就庞大Controller层，而这也是一直被人所诟病。最终的MVC都从Model-View-Controller走向了Massive-View-Controller的终点，其最严重的结果就是Control层的代码越来越多越来越臃肿难于扩展维护，同时Control层和View层之间存在一些较高的耦合。</p>
+<h2 id="App-2-0版本架构"><a href="#App-2-0版本架构" class="headerlink" title="App 2.0版本架构"></a>App 2.0版本架构</h2><p>基于上述我们遇到的问题，我们在原来的传统架构上又做了重新调整和优化，提出了iOS端架构V2.0，</p>
+<p>在爱理财V2.4.0版本项目内开始逐步重构采用MVVM+分层架构模式解耦，使越来越臃肿的Controller层逐步缩小并分解解耦，业务逻辑分模块下沉。调整后的架构如下：</p>
+<p><img src="http://7xr4jm.com1.z0.glb.clouddn.com/%EF%BC%92.png" alt="image"></p>
+<p>在原有的Controller层和Service层之间插入了一个ViewModel层(紫色的), 对于此次架构调整优点如下:</p>
+<ol>
+<li>Controller层只用来做中转层不参与业务逻辑等处理</li>
+<li>Controller层对上(View层)只提供页面展示所需数据,对下调用(ViewModel层)暴露出的业务逻辑接口</li>
+<li>方便进行功能,业务逻辑的单元测试</li>
+<li>ViewModel层实现整个业务逻辑,实现对上层只提供接口因此此层灵活,易维护</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>调整前</th>
+<th>调整后</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Controller层过于复杂</td>
+<td>Controller层只用来做中转层不参与业务逻辑等处理</td>
+</tr>
+<tr>
+<td>老的Controller层包含了业务逻辑代码使此层的代码量超大并且臃肿不易维护</td>
+<td>Controller层对上(View层)只提供页面展示所需数据,对下调用(ViewModel层)暴露出的业务逻辑接口</td>
+</tr>
+<tr>
+<td>Controller层包含业务逻辑不能较好,灵活的扩充,分隔等</td>
+<td>ViewModel层实现整个业务逻辑,实现对上层只提供接口因此此层灵活,易维护</td>
+</tr>
+<tr>
+<td>不能进行功能,业务逻辑的单元测试</td>
+<td>方便进行功能,业务逻辑的单元测试</td>
+</tr>
+</tbody>
+</table>
+<h2 id="App-3-0版本架构"><a href="#App-3-0版本架构" class="headerlink" title="App 3.0版本架构"></a>App 3.0版本架构</h2><p>我们在2.0版本架构中完成了内部竖向解耦，在V3.0版本（当前正在内部测试阶段）架构中我们将逐步实现各个层同层内部中子模块的解耦工作（横向解耦）如同层之间各个子模块之间调用相互依赖,严重影响各个模块之间的解耦,如A模块内部(甚至外部)依赖B,C模块而B,C模块又依赖A模块,这种相互依赖相互include的情况导致各个模块相互不能独立,严重影响编译速度和扩展性，灵活性等， 当前在V3.0版本中为了完成横向解耦我们内部开发实现一个动态路由组件（DR）如下图：</p>
+<p><img src="http://7xr4jm.com1.z0.glb.clouddn.com/6.png" alt="image"></p>
+<p>关于动态路由组件（DR），是一套可根据规则或下发规则自动实现页面跳转流转的组件，其主要目的为了模块间可以方便容易的横向解耦，拆分，路由，降级容错等初衷。</p>
+<h2 id="THApiClient层介绍"><a href="#THApiClient层介绍" class="headerlink" title="THApiClient层介绍"></a>THApiClient层介绍</h2><p>THApiClient层作为网络请求层在整个架构中不可或缺同时也为整个APP网络请求的封装层，提供所有网络请求接口的请求和接受，数据对象处理转换等功能,此层如下图:</p>
+<p><img src="http://7xr4jm.com1.z0.glb.clouddn.com/4.jpg" alt="image"></p>
+<p>此THApiClient层对外暴露接口如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">@interface THApiClient : NSObject</div><div class="line"></div><div class="line">+ (instancetype)defaultClient;</div><div class="line"></div><div class="line">/**</div><div class="line"> *  RPC 网络请求</div><div class="line"> *</div><div class="line"> *  @param operationType Operation type</div><div class="line"> *  @param serviceType   Service type</div><div class="line"> *  @param parameters    请求参数</div><div class="line"> *  @param resultType    期望返回的对象类型</div><div class="line"> *  @param blockType     Callback type</div><div class="line"> *  @param block         Callback</div><div class="line"> */</div><div class="line">- (void)requestWithOperationType:(NSString *)operationType</div><div class="line">                     serviceType:(NSString *)serviceType</div><div class="line">                      parameters:(NSArray *)parameters</div><div class="line">                      resultType:(NSString *)resultType</div><div class="line">                       BlockType:(THBlockType)blockType completeBlock:(VoidBlock)block;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  AFNetWork 网络请求</div><div class="line"> *</div><div class="line"> *  @param httpRequest     request type</div><div class="line"> *  @param resultClass     期望返回的对象类型</div><div class="line"> *  @param blockType       Callback type</div><div class="line"> *  @param block           Callback</div><div class="line"> */</div><div class="line">- (void)fetchDataWithRequest:(THNetWorkHttpRequest * _Nonnull)httpRequest resultClass:(Class)resultClass BlockType:(THBlockType)blockType completeBlock:(VoidBlock)block;</div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure></p>
+<h2 id="动态补丁组件-DynamicPatchKit）"><a href="#动态补丁组件-DynamicPatchKit）" class="headerlink" title="动态补丁组件(DynamicPatchKit）"></a>动态补丁组件(DynamicPatchKit）</h2><p>在爱理财App 2.1版本时候我们加入了此组件，在iOS App端我们使用的是基于<a href="http://note.youdao.com/" target="_blank" rel="external">JSPatch</a>框架并根据我们自己的业务需求等情况在JSPatch基础上封装实现的，加入此组件初衷是在发现问题时第一时间修复线上出现的紧急问题，紧急Crash等Bug功能，避免给用户带来影响。</p>
+<p>DynamicPatchKit组件初期版本已经开源，可参考源码：<br><a href="https://github.com/debugcheck/DynamicPatchManager" target="_blank" rel="external">https://github.com/debugcheck/DynamicPatchManager</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">typedef void (^DynamicPatchReturnBlock)(NSError *error, NSDictionary *dynamicPatchConfiguration);</div><div class="line"></div><div class="line">typedef NS_ENUM(NSUInteger, DynamicPatchErrorCode) &#123;</div><div class="line">    </div><div class="line">    DynamicPatch_ScriptCrash = 10000,</div><div class="line">    DynamicPatch_ScriptNonExistent,</div><div class="line">    DynamicPatch_ScriptVerifyError,</div><div class="line">    DynamicPatch_ScriptRepeatRequest,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line">@interface DynamicPatchManager : NSObject</div><div class="line"></div><div class="line">+ (instancetype)sharedManager;</div><div class="line"></div><div class="line">/**</div><div class="line"> *  返回当前脚本</div><div class="line"> *</div><div class="line"> *  @return &lt;#return value description#&gt;</div><div class="line"> */</div><div class="line">- (NSString *)decryptPatchScript;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  执行本地MainBundle中的脚本</div><div class="line"> *</div><div class="line"> *  @param name &lt;#name description#&gt;</div><div class="line"> *  @param type &lt;#type description#&gt;</div><div class="line"> */</div><div class="line">- (void)evaluateScriptInMainBundleForName:(NSString *)name type:(NSString *)type;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  执行已经请求的最新脚本，Block返回脚本信息</div><div class="line"> *</div><div class="line"> *  @param completeBlock &lt;#completeBlock description#&gt;</div><div class="line"> */</div><div class="line">- (void)excutePatchScript:(DynamicPatchReturnBlock)completeBlock;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  请求最新脚本，Block返回脚本信息</div><div class="line"> *</div><div class="line"> *  @param completeBlock &lt;#completeBlock description#&gt;</div><div class="line"> */</div><div class="line">- (void)requestPatchScriptWithCompleteBlock:(DynamicPatchReturnBlock)completeBlock;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  请求最新脚本并执行, Block返回脚本信息 （这个只是合并上面2个接口）</div><div class="line"> *</div><div class="line"> *  @param completeBlock &lt;#completeBlock description#&gt;</div><div class="line"> */</div><div class="line">- (void)requestPatchScriptAndRunWithCompleteBlock:(DynamicPatchReturnBlock)completeBlock;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<h2 id="内部统一存储组件"><a href="#内部统一存储组件" class="headerlink" title="内部统一存储组件"></a>内部统一存储组件</h2><p>在整个项目中各个页面，各个业务逻辑等等的一些功能点上都需要一些存储（数据库）相关的功能，比如数据，网络请求的缓存，为了提供更好的用户体验在内部某些数据从服务器拿到后需要先缓存起来保证在无网或其他一些情况下也能正常显示，预加载出来等等。</p>
+<p>此组件主要功能是实现把内部用到的所有存储功能进行统一，避免分散，对外暴露简单方便的接口调用同时对上层使用者来说存储功能接口透明，不用关心底层存储的具体实现，而在底层可自由方便切换存储源，也可实现基于用户相关，用户无关的存储，如在存储数据时可根据用户来区分所存储的数据是否与用户有关，是否与用户无关的，并且此组件在内部已根据LRU等算法实现快速读写，预加载等功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">@interface THViewControllerCacheManager : NSObject</div><div class="line"></div><div class="line">+ (instancetype)sharedInstance;</div><div class="line"></div><div class="line">/**</div><div class="line"> *  注册一个CacheProvide</div><div class="line"> *</div><div class="line"> *  @param cacheProvide cacheProvide 实现类</div><div class="line"> *  @param name         &lt;#name description#&gt;</div><div class="line"> *</div><div class="line"> *  @return &lt;#return value description#&gt;</div><div class="line"> */</div><div class="line">- (BOOL)registerCacheProvideWithClass:(Class)cacheProvide forName:(NSString *)name;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  通过数组注册CacheProvide</div><div class="line"> *</div><div class="line"> *  @param cacheProvideArray &lt;#cacheProvideArray description#&gt;</div><div class="line"> */</div><div class="line">- (void)registerCacheProvideWithArray:(NSArray *)cacheProvideArray;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  卸载已注册的CacheProvide类</div><div class="line"> *</div><div class="line"> *  @param name &lt;#name description#&gt;</div><div class="line"> */</div><div class="line">- (void)unregisterCacheProvideForName:(NSString *)name;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  查找某一个CacheProvide</div><div class="line"> *</div><div class="line"> *  @param name &lt;#name description#&gt;</div><div class="line"> *</div><div class="line"> *  @return &lt;#return value description#&gt;</div><div class="line"> */</div><div class="line">- (id)findCacheProvideByName:(NSString *)name;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  预取所有CacheProvide类中的存储对象</div><div class="line"> */</div><div class="line">- (void)fetchAllCacheProvide;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  刷新所有CacheProvide类中的存储对象</div><div class="line"> */</div><div class="line">- (void)refreshAllCacheProvide;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> *  刷新用户相关的CacheProvide类中的存储对象</div><div class="line"> */</div><div class="line">- (void)refreshAllUserCacheProvide;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>此组件更多信息请参见稍后开源代码。</p>
+<h2 id="React-Native组件相关"><a href="#React-Native组件相关" class="headerlink" title="React-Native组件相关"></a>React-Native组件相关</h2><p>目前在爱理财iOS App中我们已经使用到了RN技术，并且在iOS端的一部分页面也使用了RN页面，当初在我们内部建设RN主要目的是为了加快响应业务需求和加快开发速度，提升客户端对业务变化的响应能力，在iOS客户端内部所使用的RN架构主要使用的是单（全局）Bridge模式介绍如下：</p>
+<p>单（全局）Bridge模式优点:</p>
+<ol>
+<li>管理简单</li>
+<li>性能优越</li>
+<li>满足多RNView的需求</li>
+</ol>
+<p>但也存在一定的缺点：</p>
+<ol>
+<li>缺少隔离性</li>
+<li>内核有问题会导致整体Crash</li>
+</ol>
+<p>目前我们已经对缺点2做了一些优化和处理如:当RN内核或Bridge出现问题时会进行降级处理如RN页面加载失败或出现错误时候会自动降级到H5页面或指定特殊页面等，我们为了快速方便的在App内部使用RN对于一些常用的组件我们开发完善了一套RN组件库如：RNView，RNCell，RNPlugin，RN网络通信库等，同时对RN的打包发布目前我们也写了一套自动打包发布脚本，当前我们使用运用RN技术还处在初期发展阶段，在未来我们会从对RN的监控，运维，统计等多方向继续完善优化属于我们自己的THRN库和一些配套环境。</p>
+<h2 id="动态自动打点组件"><a href="#动态自动打点组件" class="headerlink" title="动态自动打点组件"></a>动态自动打点组件</h2><p>该组件独立于App内任何业务逻辑，UI逻辑，统一实现做到一个组件库就可实现基本常用埋点需求，并且埋点位置，埋点逻辑，埋点事件等可以动态下发给APP，可以实现动态的根据需求添加，删除埋点功能，最大实现自动、动态可配、正确的收集用户在使用App时的所需事件数据，该组件的整体框架采用了 AOP（Aspect-Oriented-Programming）即面向切面编程的思想，就是动态的在函数调用前后插入数据收集的代码，其中数据收集点主要根据内嵌或下发的配置文件进行打点收集，如下示例配置文件：<br><img src="http://7xr4jm.com1.z0.glb.clouddn.com/5.png" alt="image"><br>组件中还使用了一些其他技术如页面路径的优化，对收集点所需参数的取值等，此处仅做下简单介绍。</p>
+<p>在天弘·爱理财 App内部中还有一些其他优秀的组件如启动保护组件，Crash安全保护组件，H5容器组件等等，我们相信一个好的优秀的App离不开内部优秀的架构框架同样也离不开一些基础组件的建设，就如同修建盖一座楼一样优秀好的框架架构是楼基础，完善易用的组件是楼一砖一瓦，只有基础有了砖瓦完善了才有机会把楼修得高修的雄伟起来。</p>
+<p>总之，App架构的技术优化没有尽头，我们会继续以开发效率、性能、质量、新技术几个纬度不断推进，希望未来可以有更多内容分享给业内同行。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2017/04/17/天弘基金移动App客户端架构优化之路/" data-id="cj1m86t8x000lc0u17xitw321" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-IOS HTTPS简析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/30/IOS HTTPS简析/" class="article-date">
+  <time datetime="2015-01-30T09:11:54.000Z" itemprop="datePublished">1月 30 2015</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/经验介绍/">经验介绍</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/01/30/IOS HTTPS简析/">iOS HTTPS相关整理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>HTTPS与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。HTTP和SSL/TSL都处于OSI模型的应用层。HTTPS连接建立过程大致是，客户端和服务端建立一个连接，服务端返回一个证书，客户端里存有各个受信任的证书机构根证书，用这些根证书对服务端返回的证书进行验证，经验证如果证书是可信任的，就生成一个pre-master secret，用这个证书的公钥加密后发送给服务端，服务端用私钥解密后得到pre-master secret，再根据某种算法生成master secret，客户端也同样根据这种算法从pre-master secret生成master secret，随后双方的通信都用这个master secret对传输数据进行加密解密。</p>
+<blockquote>
+<p>参考阅读<br><a href="http://www.guokr.com/post/114121/">HTTPS那些事</a><br><a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html">SSL/TLS协议运行机制的概述</a><br><a href="http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html">图解SSL/TLS协议</a> </p>
+</blockquote>
+<h2 id="SSL证书，有以下几种方式："><a href="#SSL证书，有以下几种方式：" class="headerlink" title="SSL证书，有以下几种方式："></a>SSL证书，有以下几种方式：</h2><ol>
+<li>使用正规的商用授权证书，需要花钱的，据说也不算贵。四五十美金一年（自己没用过）。如果有这样的证书，AFNetworking不用任何额外的设置，只是在POST或者GET是使用的URL变成https开头的就可以了。</li>
+<li>使用自己生成SSL证书：也就是使用无效证书。这种方式也比较普遍，尤其对中小企业和个人开发来讲，免费总是好的，而且灵活自如。随时可以更换证书。对于这种方式，AFNetworking也是支持的，但需要额外的几行配置代码才行。同时，这种方式有两种不同的连接方式：<br>2.1：证书不保存在手机客户端，客户端接收所有无效证书。<br>2.2：客户端只接受来自特定服务器端的证书。
+        
+          <p class="article-more-link">
+            <a href="/2015/01/30/IOS HTTPS简析/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2015/01/30/IOS HTTPS简析/" data-id="cj1m85qb0000ac0u15sknx7ht" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2014-12-谈谈消息传递机制" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/12/30/2014-12-谈谈消息传递机制/" class="article-date">
+  <time datetime="2014-12-30T09:11:54.000Z" itemprop="datePublished">12月 30 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/经验介绍/">经验介绍</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/12/30/2014-12-谈谈消息传递机制/">谈谈消息传递机制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在当前的IOS开发中有着各种消息传递机制，包括</p>
+<ol>
+<li>KVO</li>
+<li>Notification</li>
+<li>Delegation</li>
+<li>Block</li>
+<li>target-action</li>
+<li>已及当前最新的RAC(ReactiveCocoa)方式  </li>
+</ol>
+<p>那么我们该如何选择哪种情况下使用哪种机制呢，当然，有些情况下该使用什么机制没有唯一的答案，下面只谈谈自己对这些机制的理解</p>
+<h2 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h2><p>KVO是提供对象属性被改变时的通知的机制。KVO 的实现在 Foundation 中，很多基于 Foundation 的框架都依赖它,如果只对某个对象的值的改变感兴趣的话，就可以使用 KVO 消息传递,当然必须通过SET方法这种设置属性的方法才能响应KVO<br>
+        
+          <p class="article-more-link">
+            <a href="/2014/12/30/2014-12-谈谈消息传递机制/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2014/12/30/2014-12-谈谈消息传递机制/" data-id="cj1m85qav0006c0u1k81zdi86" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2014-12-个人总结的一些 APP 的代码" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/12/23/2014-12-个人总结的一些 APP 的代码/" class="article-date">
+  <time datetime="2014-12-23T09:11:54.000Z" itemprop="datePublished">12月 23 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技巧心得/">技巧心得</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/12/23/2014-12-个人总结的一些 APP 的代码/">个人总结的一些 APP 的代码</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="建立一个辅助的APP类-减少对AppDelegate的修改"><a href="#建立一个辅助的APP类-减少对AppDelegate的修改" class="headerlink" title="建立一个辅助的APP类,减少对AppDelegate的修改"></a>建立一个辅助的APP类,减少对AppDelegate的修改</h2><p>最开始接触iOS开发的时候,如果需要一些全局变量或者全局函数的时候,总是直接在<code>AppDelegate</code>中添加,因为<code>AppDelegate</code>可以直接获取</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="built_in">UIApplication</span> sharedApplication].delegate</div></pre></td></tr></table></figure>
+<p>但是时间长了还是觉得这样不太好,<code>AppDelegate</code>本身有其自己的作用(对于App本身的一些事件进行处理,如启动,切换,推送),这样做感觉怪怪的,所以还是自己弄一个专门处理我们所需的全局变亮或者全局函数的对象会更好一些</p>
+        
+          <p class="article-more-link">
+            <a href="/2014/12/23/2014-12-个人总结的一些 APP 的代码/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2014/12/23/2014-12-个人总结的一些 APP 的代码/" data-id="cj1m86ei1000jc0u1ru52w7t7" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2014-12-读 Facebook App 头文件的一些收获(转)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/12/22/2014-12-读 Facebook App 头文件的一些收获(转)/" class="article-date">
+  <time datetime="2014-12-22T09:11:54.000Z" itemprop="datePublished">12月 22 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技巧心得/">技巧心得</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/12/22/2014-12-读 Facebook App 头文件的一些收获(转)/">读 Facebook App 头文件的一些收获(转)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>引用自</p>
+</blockquote>
+<p>最近在看一些 App 架构相关的文章，也看了 Facebook 分享的两个不同时期的架构（2013 和 2014），于是就想一窥 Facebook App 的头文件，看看会不会有更多的收获，确实有，还不少。由于在选择 ipa 上的失误，下了个 7.0 版的 Facebook（最新的是 18.1），会稍有过时，不过后来又下了个 18.1 的看了下，发现变动其实不大。以下是我从头文件中获取到的一些信息（20多万行，浏览起来还是挺累的）</p>
+<h3 id="让视图组件可以方便地配置"><a href="#让视图组件可以方便地配置" class="headerlink" title="让视图组件可以方便地配置"></a>让视图组件可以方便地配置</h3><p>这个在 Facebook 的演讲中也提到过，自定义的 UI 组件在初始化时可以传一些数值来表示想要呈现的效果，就像 HTML 和 CSS 一样，Dom 结构表示这是什么，CSS 对该结构进行个性化定制。 Facebook 是通过 Struct 来做这件事的，比如</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> FBActionSheetButtonMetrics &#123;</div><div class="line">    CDUnknownFunctionPointerType *_vptr$FBMetrics;</div><div class="line">    _Bool _initialized;</div><div class="line">    <span class="keyword">float</span> leftMargin;</div><div class="line">    <span class="keyword">float</span> textLeftMargin;</div><div class="line">    <span class="keyword">float</span> bottomSeperatorSideMargin;</div><div class="line">    <span class="keyword">float</span> bottomSeperatorHeight;</div><div class="line">    <span class="keyword">int</span> detailMaxNumLines;</div><div class="line">    <span class="built_in">UIColor</span> *titleColor;</div><div class="line">	<span class="comment">//...</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2014/12/22/2014-12-读 Facebook App 头文件的一些收获(转)/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2014/12/22/2014-12-读 Facebook App 头文件的一些收获(转)/" data-id="cj1m85qat0005c0u13k5n6cv4" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2014-10-cocoa-programming-guidelinew" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/11/25/2014-10-cocoa-programming-guidelinew/" class="article-date">
+  <time datetime="2014-11-25T09:11:54.000Z" itemprop="datePublished">11月 25 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/经验介绍/">经验介绍</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/11/25/2014-10-cocoa-programming-guidelinew/">我的 Cocoa Programming Guidelines</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="代码外观"><a href="#代码外观" class="headerlink" title="代码外观"></a>代码外观</h1><h3 id="关于头文件的定义"><a href="#关于头文件的定义" class="headerlink" title="关于头文件的定义"></a>关于头文件的定义</h3><p>每个头文件定义应该保持简洁和有序像下面这样：  </p>
+<ol>
+<li>Imports  </li>
+<li>Forward class declarations  </li>
+<li>Enumeration types  </li>
+<li>Constants  </li>
+<li>Notification names and its user info dictionary keys  </li>
+<li>Delegate protocol  </li>
+<li>Data source protocol  </li>
+<li>Class interface
+        
+          <p class="article-more-link">
+            <a href="/2014/11/25/2014-10-cocoa-programming-guidelinew/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2014/11/25/2014-10-cocoa-programming-guidelinew/" data-id="cj1m85qal0002c0u1wcb3dsuk" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2014-9-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/11/22/2014-9-hello-world/" class="article-date">
+  <time datetime="2014-11-22T09:11:54.000Z" itemprop="datePublished">11月 22 2014</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/11/22/2014-9-hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2014/11/22/2014-9-hello-world/" data-id="cj1m85qaw0008c0u10pikicrf" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2009-12-qihu" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2009/11/22/2009-12-qihu/" class="article-date">
+  <time datetime="2009-11-22T09:11:54.000Z" itemprop="datePublished">11月 22 2009</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/日常记录/">日常记录</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2009/11/22/2009-12-qihu/">2009-360网络攻防比赛整理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="360网络攻防007比赛第1题"><a href="#360网络攻防007比赛第1题" class="headerlink" title="360网络攻防007比赛第1题"></a>360网络攻防007比赛第1题</h1><p>磁盘保护挑战题<br>这个题一共写了5种写法的可能有重复的写法，先说说自己简单理解MBRPROT是怎么保护的首先加载MBRPROT后他会找到磁盘真实设备对象+0x28 DeviceExtension应该是个_FDO_EXTENSION结构会改变这个结构的+0xC DeviceObject   为自己的设备对象这样系统在进行读写操作时就会一步步的进入IoStartPacket函数中调用DeviceObject-&gt;DriverObject-&gt;DriverStartIo( DeviceObject, Irp )调用了MBRPROT的DriverStartIo函数然后他在自己的DriverStartIo进行判断是否为写1扇区的进行拦截。<br>MBRPROT拦截的流程</p>
+<p>我的第1中写法是HOOK了IoStartPacket（ 因为在IoStartPacket中会调用DriverStartIo进行读写）把调用DriverStartIo都改成atapi的DriverStartIo这样就再进行读写时就不会进到MBROPR的DriverStartIo中了。</p>
+<p>第2中写法是自己找到真实设备对象然后把他的DeviceExtension+0xC DeviceObject改为正确的设备对象这样也不会进到MBROPR的DriverStartIo中了。<br>1，2种方法可以使任何软件工具都可以正常写入1扇区的。</p>
+<p>第3种写法是自己直接发SRB写操作给atapi的DriverStartIo这样也会绕过MBRPROT的保护这样就可以写1扇区了但问题也出现了：如果说MBRPROT有2重保护的话我理解的是第1层是保护用WINHEX等不能往1扇区写入东西，就是拦截1扇区的写入，第2层是在拦截1扇区的写入同时自己也会发IRP来使1扇区清零的，这样如果你绕过第1层保护成功的写入了1扇区那你再用WINHEX查看并试着用WINHEX随便往1扇区写点东西来试MBRPROT的保护是否开启的时候MBRPROT也会让你第1次成功的写入变为没有的，这样我们刚才给atapi的DriverStartIo发的写操作也会变为没有的我采用的方法是在给atapi的DriverStartIo发写操作后HOOK atapi的DriverStartIo 判断如果是往1扇区写入操作的话我把他的Srb-&gt;DataBuffer内容改成自己的东西 因为MBRPROT清0操作会经过这里的。<br>
+        
+          <p class="article-more-link">
+            <a href="/2009/11/22/2009-12-qihu/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2009/11/22/2009-12-qihu/" data-id="cj1m85qaf0000c0u1rjyd0bho" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技巧心得/">技巧心得</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/日常记录/">日常记录</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构优化/">架构优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/经验介绍/">经验介绍</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/11/">十一月 2009</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/17/天弘基金移动App客户端架构优化之路/">天弘基金移动App客户端架构优化之路</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/30/IOS HTTPS简析/">iOS HTTPS相关整理</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/30/2014-12-谈谈消息传递机制/">谈谈消息传递机制</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/23/2014-12-个人总结的一些 APP 的代码/">个人总结的一些 APP 的代码</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/22/2014-12-读 Facebook App 头文件的一些收获(转)/">读 Facebook App 头文件的一些收获(转)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 DebugCheck<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>window._bd_share_config={"common":{},"share":{"bdCustomStyle":"nocss.css"}};with(document)0[(getElementsByTagName("head")[0]||body).appendChild(createElement("script")).src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion="+~(-new Date()/36e5)];</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

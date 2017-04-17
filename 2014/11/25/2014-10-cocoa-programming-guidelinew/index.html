@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>我的 Cocoa Programming Guidelines | DebugMan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="代码外观关于头文件的定义每个头文件定义应该保持简洁和有序像下面这样：    Imports   Forward class declarations   Enumeration types   Constants   Notification names and its user info dictionary keys   Delegate protocol   Data source prot">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的 Cocoa Programming Guidelines">
+<meta property="og:url" content="http://debugcheck.github.io/2014/11/25/2014-10-cocoa-programming-guidelinew/index.html">
+<meta property="og:site_name" content="DebugMan">
+<meta property="og:description" content="代码外观关于头文件的定义每个头文件定义应该保持简洁和有序像下面这样：    Imports   Forward class declarations   Enumeration types   Constants   Notification names and its user info dictionary keys   Delegate protocol   Data source prot">
+<meta property="og:updated_time" content="2015-01-26T13:23:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我的 Cocoa Programming Guidelines">
+<meta name="twitter:description" content="代码外观关于头文件的定义每个头文件定义应该保持简洁和有序像下面这样：    Imports   Forward class declarations   Enumeration types   Constants   Notification names and its user info dictionary keys   Delegate protocol   Data source prot">
+  
+    <link rel="alternative" href="/atom.xml" title="DebugMan" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">DebugMan</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">感受生活，感悟工作</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="debugcheck.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-2014-10-cocoa-programming-guidelinew" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/11/25/2014-10-cocoa-programming-guidelinew/" class="article-date">
+  <time datetime="2014-11-25T09:11:54.000Z" itemprop="datePublished">11月 25 2014</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/经验介绍/">经验介绍</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      我的 Cocoa Programming Guidelines
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="代码外观"><a href="#代码外观" class="headerlink" title="代码外观"></a>代码外观</h1><h3 id="关于头文件的定义"><a href="#关于头文件的定义" class="headerlink" title="关于头文件的定义"></a>关于头文件的定义</h3><p>每个头文件定义应该保持简洁和有序像下面这样：  </p>
+<ol>
+<li>Imports  </li>
+<li>Forward class declarations  </li>
+<li>Enumeration types  </li>
+<li>Constants  </li>
+<li>Notification names and its user info dictionary keys  </li>
+<li>Delegate protocol  </li>
+<li>Data source protocol  </li>
+<li>Class interface  <a id="more"></a>  
+</li>
+</ol>
+<p>接口和方法等应该有统一的前缀  </p>
+<ol>
+<li>Properties  </li>
+<li>Data source property  </li>
+<li>Delegate property  </li>
+<li>Class methods  </li>
+<li>Instance methods  </li>
+</ol>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@class</span>  <span class="title">ExampleClass</span>;</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>,  Enumeration) &#123;</div><div class="line">    EnumerationA,</div><div class="line">    EnumerationB</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">extern</span> <span class="built_in">CGFloat</span> <span class="keyword">const</span>   ExampleClassDefaultHeight;</div><div class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span>   ExampleClassWillPerformActionNotification;</div><div class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span>   ExampleClassDidPerformActionNotification;</div><div class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span>   ExampleClassActionNameKey;</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">ExampleClassDelegate</span>   &lt;<span class="title">NSObject</span>&gt;</span></div><div class="line">    - (<span class="keyword">void</span>)exampleClass:(ExampleClass  *)exampleClass didPerformAction:(Action  *)action;</div><div class="line"><span class="keyword">@optional</span></div><div class="line">    - (<span class="keyword">void</span>)exampleClass:(ExampleClass  *)exampleClass willPerformAction:(Action  *)action;</div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">ExampleClassDataSource</span>   &lt;<span class="title">NSObject</span>&gt;</span></div><div class="line">    - (<span class="built_in">NSInteger</span>)exampleClassNumberOfActions:(ExampleClass   *)exampleClass;</div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ExampleClass</span>  :  <span class="title">NSObject</span></span></div><div class="line"></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>)  <span class="built_in">NSURL</span> * initialProperty;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>)  <span class="keyword">id</span>&lt;ExampleClassDataSource&gt;   dataSource;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>)  <span class="keyword">id</span>&lt;ExampleClassDelegate&gt;   delegate;</div><div class="line"></div><div class="line">+ (<span class="keyword">id</span>)exampleClassWithInitialProperty:(<span class="built_in">NSURL</span>  *)initialProperty;</div><div class="line">- (<span class="keyword">id</span>)initWithInitialProperty:(<span class="built_in">NSURL</span>  *)initialProperty;</div><div class="line">- (<span class="keyword">void</span>)performAction;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
+<h3 id="实现文件定义"><a href="#实现文件定义" class="headerlink" title="实现文件定义"></a>实现文件定义</h3><p>实现文件中应该使用“pragma marks”进行不同功能模块的划分，不同部分不同mark组<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - Public  Properties</span></div><div class="line"><span class="meta">#pragma mark - Public  Class Methods</span></div><div class="line"><span class="meta">#pragma mark - Public  Instance Methods</span></div><div class="line"><span class="meta">#pragma mark - IBActions</span></div><div class="line"><span class="meta">#pragma mark - Overridden</span></div><div class="line"><span class="meta">#pragma mark - Private  Properties</span></div><div class="line"><span class="meta">#pragma mark - Private  Class Methods</span></div><div class="line"><span class="meta">#pragma mark - Private  Instance Methods</span></div><div class="line"><span class="meta">#pragma mark - Protocols</span></div><div class="line"><span class="meta">#pragma mark - Notifications</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#pragma mark - Overridden  (UIView)</span></div><div class="line"><span class="meta">#pragma mark - Overridden  (UIContainerViewControllerCallbacks)</span></div><div class="line"><span class="meta">#pragma mark - Overridden  (UIViewControllerRotation)</span></div></pre></td></tr></table></figure>
+<h3 id="属性的定义应该保持顺序"><a href="#属性的定义应该保持顺序" class="headerlink" title="属性的定义应该保持顺序"></a>属性的定义应该保持顺序</h3><p>|[assign | weak | strong  | copy] + [nonatomic | atomic]  + [readonly | readwrite] + [getter  = ]|</p>
+<p>如都为readwrite属性则能省略readwrite关键字<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>)  <span class="built_in">CGFloat</span> height;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>)  <span class="built_in">UIColor</span> * color;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>)  <span class="built_in">NSString</span> * name;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>)  <span class="keyword">id</span> &lt;<span class="built_in">UITableViewDelegate</span>&gt;  delegate;</div></pre></td></tr></table></figure></p>
+<p>对于boolean属性的get方法应该显示定义和重命名系统默认生成的get方法<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>,  <span class="keyword">getter</span> = isVisible) <span class="built_in">BOOL</span>   visible;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>,  <span class="keyword">getter</span> = isEnabled) <span class="built_in">BOOL</span>   enabled;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>,  <span class="keyword">getter</span> = isTracking) <span class="built_in">BOOL</span>   tracking</div></pre></td></tr></table></figure></p>
+<h3 id="协议和常量的命名应该添加类前缀"><a href="#协议和常量的命名应该添加类前缀" class="headerlink" title="协议和常量的命名应该添加类前缀"></a>协议和常量的命名应该添加类前缀</h3><p>协议，通知，枚举和其他的常量定义应该加上类的前缀<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>,  <span class="built_in">UITableViewStyle</span>) &#123;</div><div class="line">    <span class="built_in">UITableViewStylePlain</span>,</div><div class="line">    <span class="built_in">UITableViewStyleGrouped</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span>  *<span class="keyword">const</span> <span class="built_in">UITableViewIndexSearch</span>;</div><div class="line"></div><div class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="keyword">const</span> <span class="built_in">CGFloat</span>  <span class="built_in">UITableViewAutomaticDimension</span>;</div><div class="line"></div><div class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span>  *<span class="keyword">const</span> <span class="built_in">UITableViewSelectionDidChangeNotification</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">UITableViewDelegate</span>&lt;<span class="title">NSObject</span>,  <span class="title">UIScrollViewDelegate</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h3 id="IBOutlets应该声明为私有并定义成类的扩展"><a href="#IBOutlets应该声明为私有并定义成类的扩展" class="headerlink" title="IBOutlets应该声明为私有并定义成类的扩展"></a>IBOutlets应该声明为私有并定义成类的扩展</h3><p>Outlets 应该使用 weak 属性声明并在类扩展中靠前部分声明和其他属性的定义分开<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">PanelViewController</span>   ()</span></div><div class="line"></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>)  <span class="keyword">IBOutlet</span> <span class="built_in">UIButton</span> * infoButton;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>)  <span class="keyword">IBOutlet</span> <span class="built_in">UIButton</span> * closeButton;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>)  <span class="keyword">IBOutlet</span> <span class="built_in">UILabel</span> * descriptionLabel;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>)  <span class="built_in">UIView</span> * overlayView;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure></p>
+<h3 id="方法的实现应该尽早返回"><a href="#方法的实现应该尽早返回" class="headerlink" title="方法的实现应该尽早返回"></a>方法的实现应该尽早返回</h3><p>方法实现部分如果过多的嵌套会让代码阅读变得困难<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)loginUser:(<span class="built_in">NSString</span>  *)user withPassword:(<span class="built_in">NSString</span>  *)password</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (user.length &gt;= <span class="number">6</span>)   &#123;</div><div class="line">        <span class="keyword">if</span> ((password.length  &gt;= <span class="number">8</span>)  &#123;</div><div class="line">            <span class="comment">// the actual logging  code</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对应方法实现中参数应该首先判断参数是否有效<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)loginUser:(<span class="built_in">NSString</span>  *)user withPassword:(<span class="built_in">NSString</span>  *)password</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (user.length &lt; <span class="number">6</span>)  <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">    <span class="keyword">if</span> (password.length  &lt; <span class="number">8</span>) <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">    <span class="comment">// actual logging code</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样可以更早的添加错误处理逻辑<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)loginUser:(<span class="built_in">NSString</span>  *)user withPassword:(<span class="built_in">NSString</span>  *)password error:(<span class="built_in">NSError</span> **)error</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (user.length &lt; <span class="number">6</span>)   &#123;</div><div class="line">        <span class="keyword">if</span> (error !=  <span class="literal">NULL</span>)</div><div class="line">            *error = [<span class="built_in">NSError</span> errorWithDomain:ExampleDomain</div><div class="line">                                              code:<span class="number">1001</span></div><div class="line">                                              userInfo:@&#123;<span class="built_in">NSLocalizedDescriptionKey</span>:  @”User has to...”&#125;];</div><div class="line">        <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (password.length  &lt; <span class="number">8</span>)  &#123;</div><div class="line">        <span class="keyword">if</span> (error !=  <span class="literal">NULL</span>)</div><div class="line">            *error = [<span class="built_in">NSError</span> errorWithDomain:ExampleDomain</div><div class="line">                                              code:<span class="number">1002</span></div><div class="line">                                              userInfo:@&#123;<span class="built_in">NSLocalizedDescriptionKey</span>:  @”Password has  to...”&#125;];</div><div class="line">        <span class="keyword">return</span> <span class="literal">NO</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// actual logging code</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="方法实现部分中不应该使用if-else或其他进行平分如"><a href="#方法实现部分中不应该使用if-else或其他进行平分如" class="headerlink" title="方法实现部分中不应该使用if else或其他进行平分如:"></a>方法实现部分中不应该使用if else或其他进行平分如:</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)method</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.valueX == <span class="number">10</span>)   &#123;</div><div class="line">        <span class="comment">// perform some actions</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span>  &#123;</div><div class="line">        <span class="comment">// perform some other  actions</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="General-规则"><a href="#General-规则" class="headerlink" title="General 规则"></a>General 规则</h1><h3 id="引用头文件仅在需要的时候"><a href="#引用头文件仅在需要的时候" class="headerlink" title="引用头文件仅在需要的时候"></a>引用头文件仅在需要的时候</h3><p>引用头文件应该遵循下面规则：  </p>
+<ol>
+<li>如果类需要遵循某个协议 那么需要引入协议声明的头文件  </li>
+<li>如果类继承其他的类 那么需要引入父类头文件  </li>
+<li>如果类在接口部分使用了其他类的枚举 那么需要引入枚举定义的头文件  </li>
+<li>其他一些必须引入头文件的情况   </li>
+</ol>
+<h3 id="Delegate方法应该带着发送对象"><a href="#Delegate方法应该带着发送对象" class="headerlink" title="Delegate方法应该带着发送对象"></a>Delegate方法应该带着发送对象</h3><p>Delegate方法第一个参数应该为发送方对象<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">NSInteger</span>)exampleClassNumberOfActions:(ExampleClass   *)exampleClass</div><div class="line">- (<span class="keyword">void</span>)exampleClass:(ExampleClass  *)exampleClass willPerformAction:(Action  *)action;</div><div class="line">- (<span class="keyword">void</span>)exampleClass:(ExampleClass  *)exampleClass didPerformAction:(Action  *)action;</div></pre></td></tr></table></figure></p>
+<h3 id="属性如果有默认值应该注释标明"><a href="#属性如果有默认值应该注释标明" class="headerlink" title="属性如果有默认值应该注释标明"></a>属性如果有默认值应该注释标明</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line">* A Boolean value that  determines whether the view is  hidden.</div><div class="line">*/</div><div class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,  <span class="keyword">getter</span>=isHidden) <span class="built_in">BOOL</span>  hidden</div></pre></td></tr></table></figure>
+<h3 id="Init方法应该像这样"><a href="#Init方法应该像这样" class="headerlink" title="Init方法应该像这样"></a>Init方法应该像这样</h3><p>所有的设置参数应该通过Init方法进行初始化如:<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>,  <span class="keyword">readonly</span>) DownloaderMode  downloaderMode;</div><div class="line">- (<span class="keyword">id</span>)initWithDownloaderMode:(DownloaderMode)downloaderMode;</div></pre></td></tr></table></figure></p>
+<p>或者如果你需要一个通用的方法创建不同实例那应该写一个工厂方法</p>
+<h3 id="抽象类Init应该加断言避免创建抽象实例如："><a href="#抽象类Init应该加断言避免创建抽象实例如：" class="headerlink" title="抽象类Init应该加断言避免创建抽象实例如："></a>抽象类Init应该加断言避免创建抽象实例如：</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)init</div><div class="line">&#123;</div><div class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>) &#123;</div><div class="line">        <span class="built_in">NSAssert1</span>([<span class="keyword">self</span> isMemberOfClass:[MyAbstractClass  <span class="keyword">class</span>]]  ==  <span class="literal">NO</span>,</div><div class="line">                @”%@ is an abstract  <span class="keyword">class</span>. Please <span class="keyword">do</span> not create instances  of it.”, [<span class="keyword">self</span>  <span class="keyword">class</span>]);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="抽象方法应该抛出一个异常"><a href="#抽象方法应该抛出一个异常" class="headerlink" title="抽象方法应该抛出一个异常"></a>抽象方法应该抛出一个异常</h3><p>强制子类去实现抽象类的方法时候，应该在抽象类方法中抛出异常避免调用抽象类的实例方法<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)abstractMethod</div><div class="line">&#123;</div><div class="line">    [<span class="built_in">NSException</span> raise:<span class="built_in">NSInternalInconsistencyException</span> format:@”It’s template  method. Implementation must be  provided <span class="keyword">in</span> subclass.”];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="默认情况下尽量使用高层的API"><a href="#默认情况下尽量使用高层的API" class="headerlink" title="默认情况下尽量使用高层的API"></a>默认情况下尽量使用高层的API</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[[<span class="built_in">NSOperationQueue</span> mainQueue]  addOperationWithBlock:^&#123;</div><div class="line">    <span class="comment">// code</span></div><div class="line">&#125;];</div><div class="line"></div><div class="line"><span class="comment">//如需要更多控制则再使用GCD</span></div><div class="line"><span class="built_in">dispatch_sync</span>(dispatch_get_main_queue(),  ^&#123;</div><div class="line">    <span class="comment">// code</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="惰性初始化可以节省内存的使用"><a href="#惰性初始化可以节省内存的使用" class="headerlink" title="惰性初始化可以节省内存的使用"></a>惰性初始化可以节省内存的使用</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">NSMutableDictionary</span>  *)cacheDictionary</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (_cacheDictionary  == <span class="literal">nil</span>)  &#123;</div><div class="line">        _cacheDictionary = [<span class="built_in">NSMutableDictionary</span>  dictionary];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span>  _cacheDictionary;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但请注意它不是线程安全的，如2个线程同时试着初始化_cacheDictionary对象</p>
+<h3 id="方法内部尽量不使用NSError对象作为返回值"><a href="#方法内部尽量不使用NSError对象作为返回值" class="headerlink" title="方法内部尽量不使用NSError对象作为返回值"></a>方法内部尽量不使用NSError对象作为返回值</h3><p>应该使用nil或NO作为失败，YES或非0值代表成功如:<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)initWithContentsOfURL:(<span class="built_in">NSURL</span>  *)aURL;</div><div class="line">- (<span class="built_in">BOOL</span>)writeToURL:(<span class="built_in">NSURL</span>  *)aURL atomically:(<span class="built_in">BOOL</span>)atomically;</div></pre></td></tr></table></figure></p>
+<p>如果失败时NSError对象应该做为附加信息返回<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)initWithContentsOfURL:(<span class="built_in">NSURL</span>  *)aURL options:(<span class="built_in">NSDataReadingOptions</span>)mask  </div><div class="line">                            error:(<span class="built_in">NSError</span>  **)errorPtr;</div><div class="line">- (<span class="built_in">BOOL</span>)writeToURL:(<span class="built_in">NSURL</span>  *)aURL options:(<span class="built_in">NSDataWritingOptions</span>)mask  </div><div class="line">                            error:(<span class="built_in">NSError</span> **)errorPtr</div></pre></td></tr></table></figure></p>
+<h3 id="自定义错误信息"><a href="#自定义错误信息" class="headerlink" title="自定义错误信息"></a>自定义错误信息</h3><p>自定义错误应该带着error domain和error code<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span>  MyErrorDomain;</div><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>,  MyErrorCode) &#123;</div><div class="line">    MyErrorCode1,</div><div class="line">    MyErrorCode2,</div><div class="line">    MyUnknownErrorCode,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (error != <span class="literal">NULL</span>)  &#123;</div><div class="line">    <span class="keyword">if</span>(error_situation_1)   &#123;</div><div class="line">        error* = [<span class="built_in">NSError</span> errorWithDomain:MyErrorDomain</div><div class="line">                    code:MyErrorCode1</div><div class="line">                    userInfo:@&#123;<span class="built_in">NSLocalizedDescriptionKey</span>:  @”Description of  error <span class="number">1</span>”&#125;];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (error_situation_2)  &#123;</div><div class="line">        error* = [<span class="built_in">NSError</span> errorWithDomain:MyErrorDomain</div><div class="line">                    code:MyErrorCode2</div><div class="line">                    userInfo:@&#123;<span class="built_in">NSLocalizedDescriptionKey</span>:  @”Description of  error <span class="number">2</span>”&#125;];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span>  &#123;</div><div class="line">        error* = [<span class="built_in">NSError</span> errorWithDomain:MyErrorDomain</div><div class="line">                    code:MyUnknownErrorCode</div><div class="line">                    userInfo:@&#123;<span class="built_in">NSLocalizedDescriptionKey</span>:  @”Unknown error”&#125;];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="可以向已存在的类中加入属性-分类-associated-Object"><a href="#可以向已存在的类中加入属性-分类-associated-Object" class="headerlink" title="可以向已存在的类中加入属性 分类+associated Object"></a>可以向已存在的类中加入属性 分类+associated Object</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">void</span> * <span class="keyword">const</span>  navigationItemKey = (<span class="keyword">void</span> *)&amp;navigationItemKey;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)setNavigationItem:(<span class="built_in">UINavigationItem</span>  *)navigationItem</div><div class="line">&#123;</div><div class="line">    objc_setAssociatedObject(<span class="keyword">self</span>,navigationItemKey,navigationItem,OBJC_ASSOCIATION_RETAIN_NONATOMIC);</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="built_in">UINavigationItem</span>  *)navigationItem</div><div class="line">&#123;</div><div class="line">    <span class="built_in">UINavigationItem</span> * navigationItem  = objc_getAssociatedObject(<span class="keyword">self</span>,  navigationItemKey);</div><div class="line">    <span class="keyword">if</span> (navigationItem ==  <span class="literal">nil</span>)  &#123;</div><div class="line">        navigationItem = [[<span class="built_in">UINavigationItem</span>  alloc] init];</div><div class="line">        <span class="keyword">self</span>.navigationItem  = navigationItem;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span>  navigationItem;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="并发性规则"><a href="#并发性规则" class="headerlink" title="并发性规则"></a>并发性规则</h1><p>GCD大多数情况下使用默认优先级队列DISPATCH_QUEUE_PRIORITY_DEFAULT避免优先级带来的问题</p>
+<h3 id="互斥代码应该加入串行队列避免使用NSLock和-synchronized"><a href="#互斥代码应该加入串行队列避免使用NSLock和-synchronized" class="headerlink" title="互斥代码应该加入串行队列避免使用NSLock和@synchronized"></a>互斥代码应该加入串行队列避免使用NSLock和@synchronized</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)init</div><div class="line">&#123;</div><div class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>) &#123;</div><div class="line">        <span class="built_in">NSString</span> * label = [<span class="built_in">NSString</span>  stringWithFormat:@”%@.isolationQueue.%p”,  [<span class="keyword">self</span> <span class="keyword">class</span>], <span class="keyword">self</span>];</div><div class="line">        _isolationQueue = dispatch_queue_create([label  UTF8String],  DISPATCH_QUEUE_SERIAL);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>创建队列时应该像上面那样为队列添加标签方便调试<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)startDownloading</div><div class="line">&#123;</div><div class="line">    <span class="built_in">dispatch_async</span>(<span class="keyword">self</span>.isolationQueue,  ^&#123;</div><div class="line">        <span class="comment">// critical code section  A</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">void</span>)cancelDownloading</div><div class="line">&#123;</div><div class="line">    <span class="built_in">dispatch_async</span>(<span class="keyword">self</span>.isolationQueue,  ^&#123;</div><div class="line">        <span class="comment">// critical code section  B</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="多个读一个写的情况"><a href="#多个读一个写的情况" class="headerlink" title="多个读一个写的情况"></a>多个读一个写的情况</h3><p>并发队列为了保证同步访问属性应该采用dispatch_barrier_async方法<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)init</div><div class="line">&#123;</div><div class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>) &#123;</div><div class="line">        <span class="built_in">NSString</span> * queueLabel  = [<span class="built_in">NSString</span> stringWithFormat:@”%@.syncQueue.%p”,  [<span class="keyword">self</span> <span class="keyword">class</span>], <span class="keyword">self</span>];</div><div class="line">        _syncQueue = dispatch_queue_create([queueLabel  UTF8String],  DISPATCH_QUEUE_CONCURRENT);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="keyword">void</span>)setObject:(<span class="keyword">id</span>)anObject  forKey:(<span class="keyword">id</span> &lt;<span class="built_in">NSCopying</span>&gt;)aKey</div><div class="line">&#123;</div><div class="line">    aKey = [aKey copyWithZone:<span class="literal">NULL</span>];</div><div class="line">    dispatch_barrier_async(<span class="keyword">self</span>.syncQueue,  ^&#123;</div><div class="line">        [<span class="keyword">self</span>.mutableDictionary  setObject:anObject forKey:aKey];</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line">- (<span class="keyword">id</span>)objectForKey:(<span class="keyword">id</span>)aKey</div><div class="line">&#123;</div><div class="line">    __block <span class="keyword">id</span>  object;</div><div class="line">    <span class="built_in">dispatch_sync</span>(<span class="keyword">self</span>.syncQueue,  ^&#123;</div><div class="line">        object = [<span class="keyword">self</span>.mutableDictionary  objectForKey:aKey];</div><div class="line">    &#125;);</div><div class="line">    <span class="keyword">return</span>  object;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="NSOperation在执行前是可以被取消的"><a href="#NSOperation在执行前是可以被取消的" class="headerlink" title="NSOperation在执行前是可以被取消的"></a>NSOperation在执行前是可以被取消的</h3><p>main方法在执行前检查是否已取消<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)main</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.isCancelled)   <span class="keyword">return</span>;</div><div class="line">    <span class="comment">// code</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="UIView相关"><a href="#UIView相关" class="headerlink" title="UIView相关"></a>UIView相关</h1><h3 id="View的接口"><a href="#View的接口" class="headerlink" title="View的接口"></a>View的接口</h3><p>UIView应该暴露所需最小的属性和方法集</p>
+<h3 id="特殊View的接口"><a href="#特殊View的接口" class="headerlink" title="特殊View的接口"></a>特殊View的接口</h3><p>特殊View的接口应该暴露出一个方法用于配置对应的MODEL对象<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">PersonTableViewCell</span>  :  <span class="title">UITableViewCell</span></span></div><div class="line">- (<span class="keyword">void</span>)configureWithPerson:(Person  *)person</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure></p>
+<p>#未完</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2014/11/25/2014-10-cocoa-programming-guidelinew/" data-id="cj1m85qal0002c0u1wcb3dsuk" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/11/22/2014-9-hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/12/22/2014-12-读 Facebook App 头文件的一些收获(转)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">读 Facebook App 头文件的一些收获(转)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技巧心得/">技巧心得</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/日常记录/">日常记录</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构优化/">架构优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/经验介绍/">经验介绍</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/11/">十一月 2009</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/17/天弘基金移动App客户端架构优化之路/">天弘基金移动App客户端架构优化之路</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/30/IOS HTTPS简析/">iOS HTTPS相关整理</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/30/2014-12-谈谈消息传递机制/">谈谈消息传递机制</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/23/2014-12-个人总结的一些 APP 的代码/">个人总结的一些 APP 的代码</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/22/2014-12-读 Facebook App 头文件的一些收获(转)/">读 Facebook App 头文件的一些收获(转)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 DebugCheck<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>window._bd_share_config={"common":{},"share":{"bdCustomStyle":"nocss.css"}};with(document)0[(getElementsByTagName("head")[0]||body).appendChild(createElement("script")).src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion="+~(-new Date()/36e5)];</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS HTTPS相关整理 | DebugMan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="HTTPSHTTPS与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。HTTP和SSL/TSL都处于OSI模型的应用层。HTTPS连接建立过程大致是，客户端和服务端建立一个连接，服务端返回一个证书">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS HTTPS相关整理">
+<meta property="og:url" content="http://debugcheck.github.io/2015/01/30/IOS HTTPS简析/index.html">
+<meta property="og:site_name" content="DebugMan">
+<meta property="og:description" content="HTTPSHTTPS与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。HTTP和SSL/TSL都处于OSI模型的应用层。HTTPS连接建立过程大致是，客户端和服务端建立一个连接，服务端返回一个证书">
+<meta property="og:updated_time" content="2015-02-05T13:54:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS HTTPS相关整理">
+<meta name="twitter:description" content="HTTPSHTTPS与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。HTTP和SSL/TSL都处于OSI模型的应用层。HTTPS连接建立过程大致是，客户端和服务端建立一个连接，服务端返回一个证书">
+  
+    <link rel="alternative" href="/atom.xml" title="DebugMan" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">DebugMan</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">感受生活，感悟工作</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="debugcheck.github.io">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-IOS HTTPS简析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/30/IOS HTTPS简析/" class="article-date">
+  <time datetime="2015-01-30T09:11:54.000Z" itemprop="datePublished">1月 30 2015</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/经验介绍/">经验介绍</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS HTTPS相关整理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>HTTPS与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。HTTP和SSL/TSL都处于OSI模型的应用层。HTTPS连接建立过程大致是，客户端和服务端建立一个连接，服务端返回一个证书，客户端里存有各个受信任的证书机构根证书，用这些根证书对服务端返回的证书进行验证，经验证如果证书是可信任的，就生成一个pre-master secret，用这个证书的公钥加密后发送给服务端，服务端用私钥解密后得到pre-master secret，再根据某种算法生成master secret，客户端也同样根据这种算法从pre-master secret生成master secret，随后双方的通信都用这个master secret对传输数据进行加密解密。</p>
+<blockquote>
+<p>参考阅读<br><a href="http://www.guokr.com/post/114121/" target="_blank" rel="external">HTTPS那些事</a><br><a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="external">SSL/TLS协议运行机制的概述</a><br><a href="http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html" target="_blank" rel="external">图解SSL/TLS协议</a> </p>
+</blockquote>
+<h2 id="SSL证书，有以下几种方式："><a href="#SSL证书，有以下几种方式：" class="headerlink" title="SSL证书，有以下几种方式："></a>SSL证书，有以下几种方式：</h2><ol>
+<li>使用正规的商用授权证书，需要花钱的，据说也不算贵。四五十美金一年（自己没用过）。如果有这样的证书，AFNetworking不用任何额外的设置，只是在POST或者GET是使用的URL变成https开头的就可以了。</li>
+<li>使用自己生成SSL证书：也就是使用无效证书。这种方式也比较普遍，尤其对中小企业和个人开发来讲，免费总是好的，而且灵活自如。随时可以更换证书。对于这种方式，AFNetworking也是支持的，但需要额外的几行配置代码才行。同时，这种方式有两种不同的连接方式：<br>2.1：证书不保存在手机客户端，客户端接收所有无效证书。<br>2.2：客户端只接受来自特定服务器端的证书。<a id="more"></a>
+</li>
+</ol>
+<h2 id="SSL-Pinning"><a href="#SSL-Pinning" class="headerlink" title="SSL Pinning"></a>SSL Pinning</h2><p>可以理解为证书绑定，是指客户端直接保存服务端的证书，建立https连接时直接对比服务端返回的和客户端保存的两个证书是否一样，一样就表明证书是真的，不再去系统的信任证书机构里寻找验证。这适用于非浏览器应用，因为浏览器跟很多未知服务端打交道，无法把每个服务端的证书都保存到本地，但CS架构的像手机APP事先已经知道要进行通信的服务端，可以直接在客户端保存这个服务端的证书用于校验。<br>为什么直接对比就能保证证书没问题？如果中间人从客户端取出证书，再伪装成服务端跟其他客户端通信，它发送给客户端的这个证书不就能通过验证吗？确实可以通过验证，但后续的流程走不下去，因为下一步客户端会用证书里的公钥加密，中间人没有这个证书的私钥就解不出内容，也就截获不到数据，这个证书的私钥只有真正的服务端有，中间人伪造证书主要伪造的是公钥。<br>为什么要用SSL Pinning？正常的验证方式不够吗？如果服务端的证书是从受信任的的CA机构颁发的，验证是没问题的，但CA机构颁发证书比较昂贵，小企业或个人用户可能会选择自己颁发证书，这样就无法通过系统受信任的CA机构列表验证这个证书的真伪了，所以需要SSL Pinning这样的方式去验证.</p>
+<h2 id="NSURLConnection-NSURLSession实现支持HTTPS"><a href="#NSURLConnection-NSURLSession实现支持HTTPS" class="headerlink" title="NSURLConnection, NSURLSession实现支持HTTPS"></a>NSURLConnection, NSURLSession实现支持HTTPS</h2><p>先说下最常用的NSURLConnection支持HTTPS的实现（NSURLSession的实现方法类似，只是要求授权证明的回调不一样而已）后面讲说说怎样使用AFNetworking支持HTTPS</p>
+<h3 id="验证流程如下："><a href="#验证流程如下：" class="headerlink" title="验证流程如下："></a>验证流程如下：</h3><ol>
+<li><p>第一步，先获取需要验证的信任对象(Trust Object)。这个Trust Object在不同的应用场景下获取的方式都不一样，对于NSURLConnection来说，是从delegate方法-connection:willSendRequestForAuthenticationChallenge:回调回来的参数challenge中获取([challenge.protectionSpace serverTrust])。</p>
+</li>
+<li><p>使用系统默认验证方式验证Trust Object。SecTrustEvaluate会根据Trust Object的验证策略，一级一级往上，验证证书链上每一级数字签名的有效性（上一部分有讲解），从而评估证书的有效性。</p>
+</li>
+<li><p>如第二步验证通过了，一般的安全要求下，就可以直接验证通过，进入到下一步：使用Trust Object生成一份凭证([NSURLCredential credentialForTrust:serverTrust])，传入challenge的sender中([challenge.sender useCredential:cred forAuthenticationChallenge:challenge])处理，建立连接。</p>
+</li>
+<li><p>假如有更强的安全要求，可以继续对Trust Object进行更严格的验证。常用的方式是在本地导入证书，验证Trust Object与导入的证书是否匹配。更多的方法可以查看Enforcing Stricter Server Trust Evaluation，这一部分在讲解AFNetworking源码中会讲解到。</p>
+</li>
+<li><p>假如验证失败，取消此次Challenge-Response Authentication验证流程，拒绝连接请求。</p>
+</li>
+</ol>
+<p>如果采用自建证书则会跳过第二步，使用第三部进行验证，因为自建证书的根CA的数字签名未在操作系统的信任列表中</p>
+<p>NSURLConnection中的代码实现:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//使用NSURLConnection支持HTTPS的实现</span></div><div class="line"><span class="comment">// Now start the connection</span></div><div class="line"><span class="built_in">NSURL</span> * httpsURL = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"https://www.google.com"</span>];</div><div class="line"><span class="keyword">self</span>.connection = [<span class="built_in">NSURLConnection</span> connectionWithRequest:[<span class="built_in">NSURLRequest</span> requestWithURL:httpsURL] delegate:<span class="keyword">self</span>];</div><div class="line"></div><div class="line"><span class="comment">//回调</span></div><div class="line">- (<span class="keyword">void</span>)connection:(<span class="built_in">NSURLConnection</span> *)connection willSendRequestForAuthenticationChallenge:(<span class="built_in">NSURLAuthenticationChallenge</span> *)challenge &#123;</div><div class="line">    <span class="comment">//1)获取trust object</span></div><div class="line">    SecTrustRef trust = challenge.protectionSpace.serverTrust;</div><div class="line">    SecTrustResultType result;</div><div class="line"></div><div class="line">    <span class="comment">//2)SecTrustEvaluate对trust进行验证</span></div><div class="line">    OSStatus status = SecTrustEvaluate(trust, &amp;result);</div><div class="line">    <span class="keyword">if</span> (status == errSecSuccess &amp;&amp;</div><div class="line">        (result == kSecTrustResultProceed ||</div><div class="line">        result == kSecTrustResultUnspecified)) &#123;</div><div class="line"></div><div class="line">        <span class="comment">//3)验证成功，生成NSURLCredential凭证cred，告知challenge的sender使用这个凭证来继续连接</span></div><div class="line">        <span class="built_in">NSURLCredential</span> *cred = [<span class="built_in">NSURLCredential</span> credentialForTrust:trust];</div><div class="line">        [challenge.sender useCredential:cred forAuthenticationChallenge:challenge];</div><div class="line"></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line"></div><div class="line">        <span class="comment">//5)验证失败，取消这次验证流程</span></div><div class="line">        [challenge.sender cancelAuthenticationChallenge:challenge];</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上面是代码是通过系统默认验证流程来验证证书的。假如我们是自建证书的呢？这样Trust Object里面服务器的证书因为不是可信任的CA签发的，所以直接使用SecTrustEvaluate进行验证是不会成功。又或者，即使服务器返回的证书是信任CA签发的，又如何确定这证书就是我们想要的特定证书？这就需要先在本地导入证书，设置成需要验证的Anchor Certificate(就是根证书)，再调用SecTrustEvaluate来验证。代码如下</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//导入证书</span></div><div class="line"><span class="built_in">NSString</span> *cerPath = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"你的证书"</span> ofType:<span class="string">@"cer"</span>];</div><div class="line"><span class="built_in">NSData</span> * cerData = [<span class="built_in">NSData</span> dataWithContentsOfFile:cerPath];</div><div class="line">SecCertificateRef certificate = SecCertificateCreateWithData(<span class="literal">NULL</span>, (__bridge <span class="built_in">CFDataRef</span>)(cerData));</div><div class="line"><span class="keyword">self</span>.trustedCertificates = @[<span class="built_in">CFBridgingRelease</span>(certificate)];</div><div class="line"></div><div class="line"><span class="comment">//回调</span></div><div class="line">- (<span class="keyword">void</span>)connection:(<span class="built_in">NSURLConnection</span> *)connection willSendRequestForAuthenticationChallenge:(<span class="built_in">NSURLAuthenticationChallenge</span> *)challenge &#123;</div><div class="line">    <span class="comment">//1)获取trust object</span></div><div class="line">    SecTrustRef trust = challenge.protectionSpace.serverTrust;</div><div class="line">    SecTrustResultType result;</div><div class="line"></div><div class="line">    <span class="comment">//注意：这里将之前导入的证书设置成下面验证的Trust Object的anchor certificate</span></div><div class="line">    SecTrustSetAnchorCertificates(trust, (__bridge <span class="built_in">CFArrayRef</span>)<span class="keyword">self</span>.trustedCertificates);</div><div class="line"></div><div class="line">    <span class="comment">//2)SecTrustEvaluate会查找前面SecTrustSetAnchorCertificates设置的证书或者系统默认提供的证书，对trust进行验证</span></div><div class="line">    OSStatus status = SecTrustEvaluate(trust, &amp;result);</div><div class="line">    <span class="keyword">if</span> (status == errSecSuccess &amp;&amp;</div><div class="line">        (result == kSecTrustResultProceed ||</div><div class="line">        result == kSecTrustResultUnspecified)) &#123;</div><div class="line"></div><div class="line">        <span class="comment">//3)验证成功，生成NSURLCredential凭证cred，告知challenge的sender使用这个凭证来继续连接</span></div><div class="line">        <span class="built_in">NSURLCredential</span> *cred = [<span class="built_in">NSURLCredential</span> credentialForTrust:trust];</div><div class="line">        [challenge.sender useCredential:cred forAuthenticationChallenge:challenge];</div><div class="line"></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line"></div><div class="line">        <span class="comment">//5)验证失败，取消这次验证流程</span></div><div class="line">        [challenge.sender cancelAuthenticationChallenge:challenge];</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="AFNetworking支持HTTPS"><a href="#AFNetworking支持HTTPS" class="headerlink" title="AFNetworking支持HTTPS"></a>AFNetworking支持HTTPS</h2><p>AFNetworking已经将上面的逻辑代码封装好，甚至更完善，在AFSecurityPolicy文件中</p>
+<h3 id="AFSecurityPolicy"><a href="#AFSecurityPolicy" class="headerlink" title="AFSecurityPolicy"></a>AFSecurityPolicy</h3><p>NSURLConnection已经封装了https连接的建立、数据的加密解密功能，我们直接使用NSURLConnection是可以访问https网站的，但NSURLConnection并没有验证证书是否合法，无法避免中间人攻击。要做到真正安全通讯，需要我们手动去验证服务端返回的证书，AFSecurityPolicy封装了证书验证的过程，让用户可以轻易使用，除了去系统信任CA机构列表验证，还支持SSL Pinning方式的验证。</p>
+<p>AFSecurityPolicy分三种验证模式：</p>
+<ol>
+<li><p>AFSSLPinningModeNone<br>这个模式表示不做SSL pinning，只跟浏览器一样在系统的信任机构列表里验证服务端返回的证书。若证书是信任机构签发的就会通过，若是自己服务器生成的证书，这里是不会通过的。</p>
+</li>
+<li><p>AFSSLPinningModeCertificate<br>这个模式表示用证书绑定方式验证证书，需要客户端保存有服务端的证书拷贝，这里验证分两步，第一步验证证书的域名/有效期等信息，第二步是对比服务端返回的证书跟客户端返回的是否一致。<br>这里还没弄明白第一步的验证是怎么进行的，代码上跟去系统信任机构列表里验证一样调用了SecTrustEvaluate，只是这里的列表换成了客户端保存的那些证书列表。若要验证这个，是否应该把服务端证书的颁发机构根证书也放到客户端里？</p>
+</li>
+<li><p>AFSSLPinningModePublicKey<br>这个模式同样是用证书绑定方式验证，客户端要有服务端的证书拷贝，只是验证时只验证证书里的公钥，不验证证书的有效期等信息。只要公钥是正确的，就能保证通信不会被窃听，因为中间人没有私钥，无法解开通过公钥加密的数据。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSURL</span> * url = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"https://www.google.com"</span>];</div><div class="line">AFHTTPRequestOperationManager * requestOperationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];</div><div class="line"></div><div class="line"><span class="built_in">dispatch_queue_t</span> requestQueue = dispatch_create_serial_queue_for_name(<span class="string">"kRequestCompletionQueue"</span>);</div><div class="line"></div><div class="line">requestOperationManager.completionQueue = requestQueue;</div><div class="line"></div><div class="line"><span class="comment">//验证模式 AFSSLPinningModeCertificate</span></div><div class="line">AFSecurityPolicy * securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];</div><div class="line"></div><div class="line"><span class="comment">//allowInvalidCertificates 是否允许无效证书（也就是自建的证书），默认为NO</span></div><div class="line"><span class="comment">//如果是需要验证自建证书，需要设置为YES</span></div><div class="line">securityPolicy.allowInvalidCertificates = <span class="literal">YES</span>;</div><div class="line"></div><div class="line"><span class="comment">//validatesDomainName 是否需要验证域名，默认为YES；</span></div><div class="line"><span class="comment">//假如证书的域名与你请求的域名不一致，需把该项设置为NO</span></div><div class="line"><span class="comment">//主要用于这种情况：客户端请求的是子域名，而证书上的是另外一个域名。因为SSL证书上的域名是独立的，假如证书上注册的域名是www.google.com，那么mail.google.com是无法验证通过的；当然，有钱可以注册通配符的域名*.google.com，但这个还是比较贵的。</span></div><div class="line">securityPolicy.validatesDomainName = <span class="literal">NO</span>;</div><div class="line"></div><div class="line"><span class="comment">//validatesCertificateChain 是否验证整个证书链，默认为YES</span></div><div class="line"><span class="comment">//设置为YES，会将服务器返回的Trust Object上的证书链与本地导入的证书进行对比，这就意味着，假如你的证书链是这样的：</span></div><div class="line"><span class="comment">//GeoTrust Global CA </span></div><div class="line"><span class="comment">//    Google Internet Authority G2</span></div><div class="line"><span class="comment">//        *.google.com</span></div><div class="line"><span class="comment">//那么，除了导入*.google.com之外，还需要导入证书链上所有的CA证书（GeoTrust Global CA, Google Internet Authority G2）；</span></div><div class="line"><span class="comment">//如是自建证书的时候，可以设置为YES，增强安全性；假如是信任的CA所签发的证书，则建议关闭该验证；</span></div><div class="line">securityPolicy.validatesCertificateChain = <span class="literal">NO</span>;</div><div class="line"></div><div class="line">requestOperationManager.securityPolicy = securityPolicy;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>例子:<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//把服务端证书(需要转换成cer格式)放到APP项目资源里，AFSecurityPolicy会自动寻找根目录下所有cer文件</span></div><div class="line">AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];</div><div class="line"></div><div class="line"><span class="comment">// 添加security policy</span></div><div class="line"><span class="comment">// 注意：PinningMode必需是使用Public Key。如果是None，将接收所有自定义的无效证书，会产生安全漏洞</span></div><div class="line">AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];</div><div class="line"><span class="comment">// 设置可以接收无效的证书</span></div><div class="line">[securityPolicy setAllowInvalidCertificates:<span class="literal">YES</span>]; </div><div class="line"><span class="comment">// 设置不检测整个证书链，只要其中一个正确即可</span></div><div class="line">[securityPolicy setValidatesCertificateChain:<span class="literal">NO</span>];</div><div class="line"></div><div class="line">manager.securityPolicy = securityPolicy;</div><div class="line"></div><div class="line"><span class="comment">// 正常使用GET和POST，URL里是https</span></div><div class="line">[manager GET:<span class="string">@"https://example.com/resources.json"</span> parameters:<span class="literal">nil</span> success:^(AFHTTPRequestOperation *operation, <span class="keyword">id</span> responseObject) &#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"JSON: %@"</span>, responseObject);</div><div class="line">&#125; failure:^(AFHTTPRequestOperation *operation, <span class="built_in">NSError</span> *error) &#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"Error: %@"</span>, error);</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>参考 AFNetworking2.0源码解<br><a href="http://http://blog.cnbang.net/tech" target="_blank" rel="external">http://http://blog.cnbang.net/tech</a><br>参考 iOS安全系列之一：HTTPS<br><a href="http://oncenote.com/2014/10/21/Security-1-HTTPS/" target="_blank" rel="external">http://oncenote.com/2014/10/21/Security-1-HTTPS/</a><br>参考 iOS https(SSL/TLS)数据捕获<br><a href="http://www.h4ck.org.cn/2013/08/ios-httpsssltls%E6%95%B0%E6%8D%AE%E6%8D%95%E8%8E%B7/" target="_blank" rel="external">http://www.h4ck.org.cn/2013/08/ios-httpsssltls%E6%95%B0%E6%8D%AE%E6%8D%95%E8%8E%B7/</a></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://debugcheck.github.io/2015/01/30/IOS HTTPS简析/" data-id="cj1m85qb0000ac0u15sknx7ht" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/12/30/2014-12-谈谈消息传递机制/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          谈谈消息传递机制
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/17/天弘基金移动App客户端架构优化之路/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">天弘基金移动App客户端架构优化之路</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/技巧心得/">技巧心得</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/日常记录/">日常记录</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/架构优化/">架构优化</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/经验介绍/">经验介绍</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/11/">十一月 2009</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/04/17/天弘基金移动App客户端架构优化之路/">天弘基金移动App客户端架构优化之路</a>
+          </li>
+        
+          <li>
+            <a href="/2015/01/30/IOS HTTPS简析/">iOS HTTPS相关整理</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/30/2014-12-谈谈消息传递机制/">谈谈消息传递机制</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/23/2014-12-个人总结的一些 APP 的代码/">个人总结的一些 APP 的代码</a>
+          </li>
+        
+          <li>
+            <a href="/2014/12/22/2014-12-读 Facebook App 头文件的一些收获(转)/">读 Facebook App 头文件的一些收获(转)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 DebugCheck<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>window._bd_share_config={"common":{},"share":{"bdCustomStyle":"nocss.css"}};with(document)0[(getElementsByTagName("head")[0]||body).appendChild(createElement("script")).src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion="+~(-new Date()/36e5)];</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+</div>
+</body>
+</html>
