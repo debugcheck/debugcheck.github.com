@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2015 | DebugMan</title>
+  <title>Archives: 2018/3 | DebugMan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="DebugMan">
-<meta property="og:url" content="http://debugcheck.github.io/archives/2015/index.html">
+<meta property="og:url" content="http://debugcheck.github.io/archives/2018/03/index.html">
 <meta property="og:site_name" content="DebugMan">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DebugMan">
@@ -71,16 +71,12 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-IOS HTTPS简析" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-回退？降级？熔断-CrashFallbackCore模块" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/01/30/IOS HTTPS简析/" class="article-date">
-  <time datetime="2015-01-30T09:11:54.000Z" itemprop="datePublished">1月 30 2015</time>
+    <a href="/2018/03/11/回退？降级？熔断-CrashFallbackCore模块/" class="article-date">
+  <time datetime="2018-03-11T10:39:06.000Z" itemprop="datePublished">3月 11 2018</time>
 </a>
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/经验介绍/">经验介绍</a>
-  </div>
-
   </div>
   <div class="article-inner">
     
@@ -89,7 +85,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/30/IOS HTTPS简析/">iOS HTTPS相关整理</a>
+      <a class="article-title" href="/2018/03/11/回退？降级？熔断-CrashFallbackCore模块/">回退？降级？熔断? CrashFallbackCore模块</a>
     </h1>
   
 
@@ -97,23 +93,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><p>HTTPS与HTTP没有任何的区别，HTTPS就是将HTTP协议数据包放到SSL/TSL层加密后，在TCP/IP层组成IP数据报去传输，以此保证传输数据的安全；而对于接收端，在SSL/TSL将接收的数据包解密之后，将数据传给HTTP协议层，就是普通的HTTP数据。HTTP和SSL/TSL都处于OSI模型的应用层。HTTPS连接建立过程大致是，客户端和服务端建立一个连接，服务端返回一个证书，客户端里存有各个受信任的证书机构根证书，用这些根证书对服务端返回的证书进行验证，经验证如果证书是可信任的，就生成一个pre-master secret，用这个证书的公钥加密后发送给服务端，服务端用私钥解密后得到pre-master secret，再根据某种算法生成master secret，客户端也同样根据这种算法从pre-master secret生成master secret，随后双方的通信都用这个master secret对传输数据进行加密解密。</p>
-<blockquote>
-<p>参考阅读<br><a href="http://www.guokr.com/post/114121/">HTTPS那些事</a><br><a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html">SSL/TLS协议运行机制的概述</a><br><a href="http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html">图解SSL/TLS协议</a> </p>
-</blockquote>
-<h2 id="SSL证书，有以下几种方式："><a href="#SSL证书，有以下几种方式：" class="headerlink" title="SSL证书，有以下几种方式："></a>SSL证书，有以下几种方式：</h2><ol>
-<li>使用正规的商用授权证书，需要花钱的，据说也不算贵。四五十美金一年（自己没用过）。如果有这样的证书，AFNetworking不用任何额外的设置，只是在POST或者GET是使用的URL变成https开头的就可以了。</li>
-<li>使用自己生成SSL证书：也就是使用无效证书。这种方式也比较普遍，尤其对中小企业和个人开发来讲，免费总是好的，而且灵活自如。随时可以更换证书。对于这种方式，AFNetworking也是支持的，但需要额外的几行配置代码才行。同时，这种方式有两种不同的连接方式：<br>2.1：证书不保存在手机客户端，客户端接收所有无效证书。<br>2.2：客户端只接受来自特定服务器端的证书。
-        
-          <p class="article-more-link">
-            <a href="/2015/01/30/IOS HTTPS简析/#more">Read More</a>
-          </p>
-        
+        <p>当前苹果已禁止热更新补丁，如果线上出现紧急，致命的错误怎么办？立即修复发版？即使立即进行修复再加上审核最快也需要1，2天时间，在这1，2时间里可能会产生很大损失和影响，同样在这段时间内我们只能看着错误的发生等待着新版发布修复</p>
+<h1 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h1><p>我们在实现一个页面或业务功能时候通常会依赖一些其它场景,内部逻辑方法等等, 如图<br><img src="http://otfdm9rmf.bkt.clouddn.com/1.png" alt="1"><br>用户触发进入某个基金持有详情页,  在基金持有详情页会包含一些数据展现和业务功能如请求本页面数据, 进入基金详情介绍场景, 进入买入场景等,如果其中任何一个功能或服务出现错误问题会造成用户触发后出现错误,甚至导致整个APP闪退等问题,如图<br><img src="http://otfdm9rmf.bkt.clouddn.com/2.png" alt="2"></p>
+<h1 id="CrashFallbackCore"><a href="#CrashFallbackCore" class="headerlink" title="CrashFallbackCore"></a>CrashFallbackCore</h1><p>CrashFallbackCore通过以方法，函数为最小颗粒度按下发的规则进行拦截隔离处理，降级处理等操作<br>如上面的场景，基金详情页出现错而用户正好点击触发进入基金详情页，CrashFallbackCore会根据定义的规则进行拦截并自动进入降级处理操作，如下图<br><img src="http://otfdm9rmf.bkt.clouddn.com/3.png" alt="3"><br>降级处理可采用多种形式如弹出信息框告知用户, 切换到指定预设场景, 跳转到默认降级H5页面等</p>
+<p>通过使用CrashFallbackCore我们可方便有效的防止错误的发生，同时使系统具有自动降级处理效果</p>
+<h1 id="实现机制"><a href="#实现机制" class="headerlink" title="实现机制"></a>实现机制</h1><p>在Objective C的方法调用过程中当无法响应一个selector时，在抛出异常之前会先进入系统消息转发机制(官方文档：<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtForwarding.html#//apple_ref/doc/uid/TP40008048-CH105-SW2" target="_blank" rel="external">Message Forwarding</a>), 消息转发过程会经历Method resolution，Fast forwarding，Normal forwarding，CrashFallbackCore内部核心机制是对消息转发最后一步forwardInvocation进行HOOK</p>
+<p>CrashFallbackCore首先加载规则文件，根据配置的规则文件生成规则列表，再根据规则列表对已配置的类和方法进行forwardInvocation替换（替换为内部CFForwardInvocation方法），系统运行过程中当触发到对应的配置时将会进入内部CFForwardInvocation方法，在CFForwardInvocation方法中根据对应的配置规矩进行处理</p>
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p><img src="http://otfdm9rmf.bkt.clouddn.com/4.png" alt="-w368"></p>
+<p><img src="http://otfdm9rmf.bkt.clouddn.com/5.png" alt="-w368"></p>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://debugcheck.github.io/2015/01/30/IOS HTTPS简析/" data-id="cjemo2wio00094qfye7benxci" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://debugcheck.github.io/2018/03/11/回退？降级？熔断-CrashFallbackCore模块/" data-id="cjemo2wir000c4qfyp3z4ho9g" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
